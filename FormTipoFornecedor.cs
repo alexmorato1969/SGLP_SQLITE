@@ -25,7 +25,7 @@ namespace SGLP_SQLITE
         {
             using (SqliteConnection db = new SqliteConnection($"Filename={caminhoBD}"))
             {
-                int insertCount = 0;
+
                 db.Open();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("Insert into tb_Tipo_Fornecedor VALUES (NULL, ");
@@ -35,14 +35,59 @@ namespace SGLP_SQLITE
                 sql.Parameters.AddWithValue("@DescFornecedor", txtTipoFornecedor.Text);
                 sql.Parameters.AddWithValue("@flgAtivo", chkAtivoTipoFornecedor.Checked);
 
-                insertCount = sql.ExecuteNonQuery();
-
-
-                if (insertCount > 0)
+                if (sql.ExecuteNonQuery() > 0)
                 {
                     MessageBox.Show("O registro foi inserido com sucesso", "Tipo de Fornecedor", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+
+                List<TipoFornecedor> tiposf = LerTipoFornecedores(caminhoBD);
+                dgv_TipoFornecedor.DataSource = tiposf;
             }
+        }
+
+        private List<TipoFornecedor> LerTipoFornecedores(string caminho)
+        {
+            using (SqliteConnection db = new SqliteConnection($"Filename={caminhoBD}"))
+            {
+                db.Open();
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT * FROM tb_Tipo_Fornecedor order by cod_Tipo_Fornecedor");
+                SqliteCommand sql = new SqliteCommand(sb.ToString(), db);
+                SqliteDataReader leitor = sql.ExecuteReader();
+                List<TipoFornecedor> tipofornecedores = new List<TipoFornecedor>();
+
+                while (leitor.Read())
+                {
+                    TipoFornecedor tipofornec = new TipoFornecedor
+                    {
+                        cod_Tipo_Fornecedor = Convert.ToInt32(leitor["cod_Tipo_Fornecedor"]),
+                        dsc_Tipo_Fornecedor = leitor["dsc_Tipo_Fornecedor"].ToString(),
+                        flg_Ativo = Convert.ToBoolean(leitor["flg_ativo"])
+                    };
+                    tipofornecedores.Add(tipofornec);
+                }
+                return tipofornecedores;
+            }
+        }
+
+        private void FormTipoFornecedor_Load(object sender, EventArgs e)
+        {
+
+            List<TipoFornecedor> tiposf = LerTipoFornecedores(caminhoBD);
+            dgv_TipoFornecedor.DataSource = tiposf;
+            dgvFormat();
+        }
+
+        private void dgvFormat()
+        {
+            dgv_TipoFornecedor.Columns[0].HeaderText = "Cód";
+            dgv_TipoFornecedor.Columns[0].Width = 75;
+            dgv_TipoFornecedor.Columns[1].HeaderText = "Tipo de Fornecedor";
+            dgv_TipoFornecedor.Columns[1].Width = 250;
+            dgv_TipoFornecedor.Columns[2].HeaderText = "Ativo";
+            dgv_TipoFornecedor.Columns[2].Width = 75;
+            dgv_TipoFornecedor.Update();
         }
     }
 }

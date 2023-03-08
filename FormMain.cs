@@ -35,13 +35,22 @@ namespace SGLP_SQLITE
                 db.Open();
 
                 StringBuilder sb = new StringBuilder();
+
+                //Cria tabela de Tipo de Fornecedor
                 sb.Append("CREATE TABLE IF NOT EXISTS tb_Tipo_Fornecedor (");
                 sb.Append("cod_Tipo_Fornecedor INTEGER PRIMARY KEY, ");
                 sb.Append("dsc_Tipo_Fornecedor VARCHAR(50) NOT NULL UNIQUE, ");
                 sb.Append("flg_Ativo BOOLEAN DEFAULT true);");
 
+                //Cria tabela de Fornecedor
+                sb.Append("CREATE TABLE IF NOT EXISTS tb_Fornecedor (");
+                sb.Append("cod_Fornecedor INTEGER PRIMARY KEY, ");
+                sb.Append("nme_Fornecedor VARCHAR(100) NOT NULL UNIQUE, ");
+                sb.Append("flg_Ativo BOOLEAN DEFAULT true);");
+
                 SqliteCommand sql = new SqliteCommand(sb.ToString(), db);
                 sql.ExecuteNonQuery();
+
 
             }
         }
@@ -52,6 +61,20 @@ namespace SGLP_SQLITE
             FormTipoFornecedor formTipoFornecedor = new FormTipoFornecedor();
             formTipoFornecedor.MdiParent = this;
             formTipoFornecedor.Show();
+        }
+
+        private void sairToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Deseja encerrar o sistema ?", "SGLP", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+            {
+                return;
+            }
+            
         }
     }
 }

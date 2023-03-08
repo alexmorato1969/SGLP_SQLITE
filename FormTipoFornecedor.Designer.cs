@@ -54,7 +54,7 @@
             panelTipoFornecedorCRUD.Dock = System.Windows.Forms.DockStyle.Top;
             panelTipoFornecedorCRUD.Location = new System.Drawing.Point(0, 0);
             panelTipoFornecedorCRUD.Name = "panelTipoFornecedorCRUD";
-            panelTipoFornecedorCRUD.Size = new System.Drawing.Size(784, 89);
+            panelTipoFornecedorCRUD.Size = new System.Drawing.Size(584, 89);
             panelTipoFornecedorCRUD.TabIndex = 0;
             // 
             // btn_Filtrar_TipoFornecedor
@@ -99,9 +99,9 @@
             chkAtivoTipoFornecedor.AutoSize = true;
             chkAtivoTipoFornecedor.Location = new System.Drawing.Point(453, 16);
             chkAtivoTipoFornecedor.Name = "chkAtivoTipoFornecedor";
-            chkAtivoTipoFornecedor.Size = new System.Drawing.Size(60, 19);
+            chkAtivoTipoFornecedor.Size = new System.Drawing.Size(54, 19);
             chkAtivoTipoFornecedor.TabIndex = 2;
-            chkAtivoTipoFornecedor.Text = "Ativo :";
+            chkAtivoTipoFornecedor.Text = "Ativo";
             chkAtivoTipoFornecedor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             chkAtivoTipoFornecedor.UseVisualStyleBackColor = true;
             // 
@@ -126,22 +126,25 @@
             // dgv_TipoFornecedor
             // 
             dgv_TipoFornecedor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_TipoFornecedor.Location = new System.Drawing.Point(12, 159);
+            dgv_TipoFornecedor.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgv_TipoFornecedor.Location = new System.Drawing.Point(0, 89);
             dgv_TipoFornecedor.Name = "dgv_TipoFornecedor";
             dgv_TipoFornecedor.RowTemplate.Height = 25;
-            dgv_TipoFornecedor.Size = new System.Drawing.Size(742, 150);
+            dgv_TipoFornecedor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgv_TipoFornecedor.Size = new System.Drawing.Size(584, 272);
             dgv_TipoFornecedor.TabIndex = 1;
             // 
             // FormTipoFornecedor
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(784, 361);
+            ClientSize = new System.Drawing.Size(584, 361);
             Controls.Add(dgv_TipoFornecedor);
             Controls.Add(panelTipoFornecedorCRUD);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             Name = "FormTipoFornecedor";
             Text = "Manutenção de Tipo de Fornecedor";
+            Load += FormTipoFornecedor_Load;
             panelTipoFornecedorCRUD.ResumeLayout(false);
             panelTipoFornecedorCRUD.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgv_TipoFornecedor).EndInit();
