@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SGLP_SQLITE
+namespace SGLP_SQLITE.Classes
 {
     internal class TipoFornecedor
     {

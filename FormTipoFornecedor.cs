@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using SGLP_SQLITE.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,34 +16,37 @@ namespace SGLP_SQLITE
     public partial class FormTipoFornecedor : Form
     {
         string caminhoBD = Path.Combine(Application.LocalUserAppDataPath, "sglp.db");
+        int idTipoFornecedordgv;
 
         public FormTipoFornecedor()
         {
             InitializeComponent();
         }
 
+        private void FormTipoFornecedor_Load(object sender, EventArgs e)
+        {
+
+            List<TipoFornecedor> tiposf = LerTipoFornecedores(caminhoBD);
+            dgv_TipoFornecedor.DataSource = tiposf;
+            dgvFormat();
+        }
+
         private void btn_insert_TipoFornecedor_Click(object sender, EventArgs e)
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={caminhoBD}"))
-            {
+            InsereRegistro(caminhoBD);
+             AtualizaControles();
+        }
 
-                db.Open();
-                StringBuilder sb = new StringBuilder();
-                sb.Append("Insert into tb_Tipo_Fornecedor VALUES (NULL, ");
-                sb.Append("@DescFornecedor, @flgAtivo)");
+        private void btn_update_TipoFornecedor_Click(object sender, EventArgs e)
+        {
+            AlteraRegistro(caminhoBD, idTipoFornecedordgv);
+            AtualizaControles();
+        }
 
-                SqliteCommand sql = new SqliteCommand(sb.ToString(), db);
-                sql.Parameters.AddWithValue("@DescFornecedor", txtTipoFornecedor.Text);
-                sql.Parameters.AddWithValue("@flgAtivo", chkAtivoTipoFornecedor.Checked);
-
-                if (sql.ExecuteNonQuery() > 0)
-                {
-                    MessageBox.Show("O registro foi inserido com sucesso", "Tipo de Fornecedor", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                List<TipoFornecedor> tiposf = LerTipoFornecedores(caminhoBD);
-                dgv_TipoFornecedor.DataSource = tiposf;
-            }
+        private void btn_delete_TipoFornecedor_Click(object sender, EventArgs e)
+        {
+            ExcluiRegistro(caminhoBD, idTipoFornecedordgv);
+            AtualizaControles();
         }
 
         private List<TipoFornecedor> LerTipoFornecedores(string caminho)
@@ -71,14 +75,6 @@ namespace SGLP_SQLITE
             }
         }
 
-        private void FormTipoFornecedor_Load(object sender, EventArgs e)
-        {
-
-            List<TipoFornecedor> tiposf = LerTipoFornecedores(caminhoBD);
-            dgv_TipoFornecedor.DataSource = tiposf;
-            dgvFormat();
-        }
-
         private void dgvFormat()
         {
             dgv_TipoFornecedor.Columns[0].HeaderText = "Cód";
@@ -89,5 +85,84 @@ namespace SGLP_SQLITE
             dgv_TipoFornecedor.Columns[2].Width = 75;
             dgv_TipoFornecedor.Update();
         }
+
+        private void dgv_TipoFornecedor_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            idTipoFornecedordgv = Convert.ToInt32(dgv_TipoFornecedor.CurrentRow.Cells[0].Value);
+            txtTipoFornecedor.Text = dgv_TipoFornecedor.CurrentRow.Cells[1].Value.ToString();
+            chkAtivoTipoFornecedor.Checked = (bool)dgv_TipoFornecedor.CurrentRow.Cells[2].Value;
+        }
+
+        private void InsereRegistro(string caminho)
+        {
+            using (SqliteConnection db = new SqliteConnection($"Filename={caminhoBD}"))
+            {
+
+                db.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Insert into tb_Tipo_Fornecedor VALUES (NULL, ");
+                sb.Append("@DescFornecedor, @flgAtivo)");
+
+                SqliteCommand sql = new SqliteCommand(sb.ToString(), db);
+                sql.Parameters.AddWithValue("@DescFornecedor", txtTipoFornecedor.Text);
+                sql.Parameters.AddWithValue("@flgAtivo", chkAtivoTipoFornecedor.Checked);
+
+                if (sql.ExecuteNonQuery() > 0)
+                {
+                    MessageBox.Show("O registro foi inserido com sucesso", "Tipo de Fornecedor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void AlteraRegistro(string caminho, int idTipoFornecedor)
+        {
+            using (SqliteConnection db = new SqliteConnection($"Filename={caminhoBD}"))
+            {
+
+                db.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("UPDATE tb_Tipo_Fornecedor SET ");
+                sb.Append("dsc_Tipo_Fornecedor = @DescTipoFornecedor, flg_Ativo = @flgAtivo ");
+                sb.Append("WHERE cod_Tipo_Fornecedor = @cod_Tipo_Fornecedor");
+                SqliteCommand sql = new SqliteCommand(sb.ToString(), db);
+                sql.Parameters.AddWithValue("@DescTipoFornecedor", txtTipoFornecedor.Text);
+                sql.Parameters.AddWithValue("@flgAtivo", chkAtivoTipoFornecedor.Checked);
+                sql.Parameters.AddWithValue("@cod_Tipo_Fornecedor", idTipoFornecedor);
+
+                if (sql.ExecuteNonQuery() > 0)
+                {
+                    MessageBox.Show("O registro foi alterado com sucesso", "Tipo de Fornecedor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void ExcluiRegistro(string caminho, int idTipoFornecedor)
+        {
+            using (SqliteConnection db = new SqliteConnection($"Filename={caminhoBD}"))
+            {
+
+                db.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("DELETE from tb_Tipo_Fornecedor ");
+                sb.Append("WHERE cod_Tipo_Fornecedor = @cod_Tipo_Fornecedor");
+                SqliteCommand sql = new SqliteCommand(sb.ToString(), db);
+                sql.Parameters.AddWithValue("@cod_Tipo_Fornecedor", idTipoFornecedor);
+
+                if (sql.ExecuteNonQuery() > 0)
+                {
+                    MessageBox.Show("O registro foi excluído com sucesso", "Tipo de Fornecedor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void AtualizaControles()
+        {
+            List<TipoFornecedor> tiposf = LerTipoFornecedores(caminhoBD);
+            dgv_TipoFornecedor.DataSource = tiposf;
+            txtTipoFornecedor.Text = string.Empty;
+            chkAtivoTipoFornecedor.Checked = true;
+        }
+
+
     }
 }

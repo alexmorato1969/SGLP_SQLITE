@@ -74,6 +74,7 @@
             btn_delete_TipoFornecedor.TabIndex = 5;
             btn_delete_TipoFornecedor.Text = "Excluir";
             btn_delete_TipoFornecedor.UseVisualStyleBackColor = true;
+            btn_delete_TipoFornecedor.Click += btn_delete_TipoFornecedor_Click;
             // 
             // btn_update_TipoFornecedor
             // 
@@ -83,6 +84,7 @@
             btn_update_TipoFornecedor.TabIndex = 4;
             btn_update_TipoFornecedor.Text = "Atualizar";
             btn_update_TipoFornecedor.UseVisualStyleBackColor = true;
+            btn_update_TipoFornecedor.Click += btn_update_TipoFornecedor_Click;
             // 
             // btn_insert_TipoFornecedor
             // 
@@ -128,11 +130,13 @@
             dgv_TipoFornecedor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_TipoFornecedor.Dock = System.Windows.Forms.DockStyle.Fill;
             dgv_TipoFornecedor.Location = new System.Drawing.Point(0, 89);
+            dgv_TipoFornecedor.MultiSelect = false;
             dgv_TipoFornecedor.Name = "dgv_TipoFornecedor";
             dgv_TipoFornecedor.RowTemplate.Height = 25;
             dgv_TipoFornecedor.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dgv_TipoFornecedor.Size = new System.Drawing.Size(584, 272);
             dgv_TipoFornecedor.TabIndex = 1;
+            dgv_TipoFornecedor.RowHeaderMouseClick += dgv_TipoFornecedor_RowHeaderMouseClick;
             // 
             // FormTipoFornecedor
             // 
@@ -143,6 +147,7 @@
             Controls.Add(panelTipoFornecedorCRUD);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             Name = "FormTipoFornecedor";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Manutenção de Tipo de Fornecedor";
             Load += FormTipoFornecedor_Load;
             panelTipoFornecedorCRUD.ResumeLayout(false);
